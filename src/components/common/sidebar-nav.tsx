@@ -12,26 +12,25 @@ interface NavItem {
   href: string;
   label: string;
   icon: LucideIcon;
-  segment?: string | null;
+  // segment prop is no longer needed with the simplified isActive logic
 }
 
 const navItems: NavItem[] = [
-  { href: "/dashboard", label: "Threat Map", icon: Map, segment: null },
-  { href: "/dashboard/analytics", label: "Analytics Hub", icon: BarChart3, segment: "analytics" },
+  { href: "/dashboard", label: "Threat Map", icon: Map },
+  { href: "/dashboard/analytics", label: "Analytics Hub", icon: BarChart3 },
 ];
 
 export function SidebarNav() {
   const pathname = usePathname();
-  const currentSegment = pathname.split("/")[2] || null;
 
   return (
     <SidebarMenu>
       {navItems.map((item) => (
-        <SidebarMenuItem key={item.label}>
+        <SidebarMenuItem key={item.href}>
           <Link href={item.href} legacyBehavior passHref>
             <SidebarMenuButton
               asChild
-              isActive={currentSegment === item.segment}
+              isActive={pathname === item.href}
               tooltip={{ children: item.label, side: 'right', className: 'ml-2' }}
             >
               <a>
