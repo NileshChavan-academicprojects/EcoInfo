@@ -1,14 +1,17 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Trees, Flame, Droplets, Bird, MapPin } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Trees, Flame, Droplets, Bird, MapPin, Sun, Cloud, Loader2, AlertTriangle } from "lucide-react";
 import { ThreatSummaryDialog } from "@/components/threats/threat-summary-dialog";
+import { getWeatherForecast, type GetWeatherForecastInput, type GetWeatherForecastOutput } from "@/ai/flows/get-weather-forecast-flow";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface ThreatLayer {
   id: string;
@@ -32,6 +35,11 @@ export default function ThreatMapPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedThreat, setSelectedThreat] = useState<ThreatLayer | null>(null);
 
+  const [weatherLocation, setWeatherLocation] = useState<string>("London");
+  const [weatherForecast, setWeatherForecast] = useState<GetWeatherForecastOutput | null>(null);
+  const [isWeatherLoading, setIsWeatherLoading] = useState<boolean>(false);
+  const [weatherError, setWeatherError] = useState<string | null>(null);
+
   const handleLayerToggle = (layerId: string) => {
     setActiveLayers((prev) => ({ ...prev, [layerId]: !prev[layerId] }));
   };
@@ -40,6 +48,33 @@ export default function ThreatMapPage() {
     setSelectedThreat(threat);
     setIsDialogOpen(true);
   };
+
+  const fetchWeather = async () => {
+    if (!weatherLocation.trim()) {
+      setWeatherError("Please enter a location.");
+      return;
+    }
+    setIsWeatherLoading(true);
+    setWeatherError(null);
+    setWeatherForecast(null);
+    try {
+      const input: GetWeatherForecastInput = { location: weatherLocation };
+      const result = await getWeatherForecast(input);
+      setWeatherForecast(result);
+    } catch (err) {
+      console.error("Error fetching weather:", err);
+      setWeatherError("Failed to fetch weather forecast. The AI model might be busy or the location is not recognized. Please try again.");
+    } finally {
+      setIsWeatherLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    // Fetch weather for default location on initial load
+    fetchWeather();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array to run only once on mount
+
 
   return (
     <div className="container mx-auto py-2">
@@ -55,12 +90,10 @@ export default function ThreatMapPage() {
             <Image
               src="https://placehold.co/1200x675.png"
               alt="World Map Placeholder"
-              layout="fill"
-              objectFit="cover"
-              data-ai-hint="world map satellite"
-              className="opacity-50"
+              fill
+              data-ai-hint="openstreetmap style map"
+              className="opacity-50 object-cover"
             />
-            {/* Mock clickable threat markers */}
             {threatLayers.map((threat, index) => activeLayers[threat.id] && (
               <Button 
                 key={threat.id}
@@ -78,33 +111,81 @@ export default function ThreatMapPage() {
                 <threat.icon className="h-5 w-5 text-destructive-foreground" />
               </Button>
             ))}
-             <div className="absolute bottom-4 right-4 p-2 bg-background/80 rounded-md text-xs text-muted-foreground">
+             <div className="absolute bottom-4 right-4 p-2 bg-background/80 rounded-md text-xs text-muted-foreground shadow">
                 Map data CC BY OpenStreetMap contributors
              </div>
           </CardContent>
         </Card>
 
-        <Card className="shadow-lg">
-          <CardHeader>
-            <CardTitle>Threat Layers</CardTitle>
-            <CardDescription>Toggle visibility of threat layers on the map.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {threatLayers.map((layer) => (
-              <div key={layer.id} className="flex items-center space-x-3 p-2 rounded-md hover:bg-muted/50 transition-colors">
-                <Checkbox
-                  id={layer.id}
-                  checked={activeLayers[layer.id] || false}
-                  onCheckedChange={() => handleLayerToggle(layer.id)}
+        <div className="space-y-6">
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle>Threat Layers</CardTitle>
+              <CardDescription>Toggle visibility of threat layers on the map.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {threatLayers.map((layer) => (
+                <div key={layer.id} className="flex items-center space-x-3 p-2 rounded-md hover:bg-muted/50 transition-colors">
+                  <Checkbox
+                    id={layer.id}
+                    checked={activeLayers[layer.id] || false}
+                    onCheckedChange={() => handleLayerToggle(layer.id)}
+                  />
+                  <layer.icon className="h-5 w-5 text-primary" />
+                  <Label htmlFor={layer.id} className="flex-1 cursor-pointer text-sm">
+                    {layer.name}
+                  </Label>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Sun className="h-6 w-6 text-primary" />
+                Weather Forecast
+              </CardTitle>
+              <CardDescription>Current weather conditions by location.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex space-x-2">
+                <Input 
+                  type="text" 
+                  placeholder="Enter location (e.g., London)" 
+                  value={weatherLocation}
+                  onChange={(e) => setWeatherLocation(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && fetchWeather()}
+                  className="flex-grow"
                 />
-                <layer.icon className="h-5 w-5 text-primary" />
-                <Label htmlFor={layer.id} className="flex-1 cursor-pointer text-sm">
-                  {layer.name}
-                </Label>
+                <Button onClick={fetchWeather} disabled={isWeatherLoading}>
+                  {isWeatherLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Get"}
+                </Button>
               </div>
-            ))}
-          </CardContent>
-        </Card>
+              {weatherError && (
+                 <Alert variant="destructive" className="text-xs">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>{weatherError}</AlertDescription>
+                </Alert>
+              )}
+              {weatherForecast && !isWeatherLoading && !weatherError && (
+                <div className="p-3 bg-muted/50 rounded-md space-y-2 text-sm">
+                  <p className="font-semibold text-primary">{weatherForecast.rawTemperature ? `${weatherForecast.rawTemperature.toFixed(0)}°${weatherForecast.unit || 'C'}` : 'N/A'}, {weatherForecast.rawDescription || 'Not available'}</p>
+                  <p>{weatherForecast.forecast}</p>
+                  {weatherForecast.rawHumidity && <p className="text-xs text-muted-foreground">Humidity: {weatherForecast.rawHumidity}%</p>}
+                  {weatherForecast.rawWindSpeed && <p className="text-xs text-muted-foreground">Wind: {weatherForecast.rawWindSpeed} km/h</p>}
+                </div>
+              )}
+              {isWeatherLoading && !weatherError &&(
+                <div className="flex items-center justify-center p-4">
+                  <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                  <p className="ml-2 text-sm text-muted-foreground">Fetching weather...</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {selectedThreat && (
