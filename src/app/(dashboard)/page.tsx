@@ -51,7 +51,7 @@ export default function ThreatMapPage() {
             <CardTitle>Global Environmental Threats</CardTitle>
             <CardDescription>Real-time visualization of environmental threats. Click on markers for details.</CardDescription>
           </CardHeader>
-          <CardContent className="relative aspect-[16/9] bg-muted rounded-md overflow-hidden">
+          <CardContent className="relative aspect-[16/9] bg-muted rounded-md overflow-hidden border">
             <Image
               src="https://placehold.co/1200x675.png"
               alt="World Map Placeholder"

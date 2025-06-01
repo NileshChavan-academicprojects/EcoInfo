@@ -169,7 +169,7 @@ export default function AnalyticsHubPage() {
               <RechartsLineChart data={contaminantFlowData} accessibilityLayer margin={{ top:5, right: 20, left: -10, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="time" />
-                <YAxis label={{ value: 'Concentration (µg/L)', angle: -90, position: 'insideLeft', offset:0 }} />
+                <YAxis label={{ value: 'Concentration (µg/L)', angle: -90, position: 'insideLeft', offset: -10 }} />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <ChartLegend content={<ChartLegendContent />} />
                 <Line type="monotone" dataKey="upstream" strokeWidth={2} dot={true} stroke="var(--color-upstream)" name="Upstream" />
