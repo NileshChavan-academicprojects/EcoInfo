@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -56,7 +57,7 @@ export default function ThreatMapPage() {
               alt="World Map Placeholder"
               layout="fill"
               objectFit="cover"
-              data-ai-hint="world map satellite"
+              data-ai-hint="openstreetmap style map"
               className="opacity-50"
             />
             {/* Mock clickable threat markers */}
@@ -77,7 +78,7 @@ export default function ThreatMapPage() {
                 <threat.icon className="h-5 w-5 text-destructive-foreground" />
               </Button>
             ))}
-             <div className="absolute bottom-4 right-4 p-2 bg-background/80 rounded-md text-xs text-muted-foreground">
+             <div className="absolute bottom-4 right-4 p-2 bg-background/80 rounded-md text-xs text-muted-foreground shadow">
                 Map data CC BY OpenStreetMap contributors
              </div>
           </CardContent>
