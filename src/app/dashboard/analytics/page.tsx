@@ -2,9 +2,9 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trees, Flame, Droplets, Bird } from "lucide-react";
+import { Trees, Flame, Droplets, Bird, Network, Activity, Atom, Sigma, Workflow } from "lucide-react";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
-import { Bar, BarChart as RechartsBarChart, Line, LineChart as RechartsLineChart, XAxis, YAxis, CartesianGrid, Pie, PieChart as RechartsPieChart, Cell, ResponsiveContainer } from "recharts"
+import { Bar, BarChart as RechartsBarChart, Line, LineChart as RechartsLineChart, XAxis, YAxis, CartesianGrid, Pie, PieChart as RechartsPieChart, Cell } from "recharts"
 
 const deforestationData = [
   { month: "Jan", loss: 1200, color: "hsl(var(--chart-1))" },
@@ -48,6 +48,44 @@ const chartConfig = {
   value: { label: "Species Count" }
 } satisfies Record<string, any>;
 
+const predictionTechniques = [
+  {
+    name: "Spatio-Temporal Graph Neural Networks (ST-GNN)",
+    icon: Network,
+    bestFor: "Pollution spread, wildfire propagation",
+    why: "Models geographic relationships (rivers/roads) + time dynamics",
+    ecoSentinelUse: "Predict contaminant flow in watersheds"
+  },
+  {
+    name: "Transformer-based Time Series Models (TFT, Informer)",
+    icon: Activity,
+    bestFor: "Long-horizon forecasting (air quality, climate trends)",
+    why: "Advanced architectures for capturing complex temporal patterns",
+    ecoSentinelUse: "PM2.5 forecasting 30 days ahead"
+  },
+  {
+    name: "Physics-Informed Neural Networks (PINNs)",
+    icon: Atom,
+    bestFor: "Incorporating scientific laws (fluid dynamics, thermodynamics)",
+    why: "Combines data-driven learning with established physical principles",
+    ecoSentinelUse: "Combining weather models with ML for fire spread prediction"
+  },
+  {
+    name: "Gaussian Processes (GPs)",
+    icon: Sigma,
+    bestFor: "Uncertainty quantification in sparse-data regions",
+    why: "Provides probabilistic predictions, highlighting areas of low confidence",
+    ecoSentinelUse: "Biodiversity predictions in unexplored forests"
+  },
+  {
+    name: "Causal AI Models (Granger Causality, DoWhy)",
+    icon: Workflow,
+    bestFor: "Policy impact simulation (e.g., \"How would logging bans affect fire risk?\")",
+    why: "Helps understand cause-and-effect relationships beyond correlation",
+    ecoSentinelUse: "Simulating impact of conservation policies on threat levels"
+  }
+];
+
 
 export default function AnalyticsHubPage() {
   return (
@@ -57,7 +95,7 @@ export default function AnalyticsHubPage() {
         Key environmental metrics and trends visualized.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -144,6 +182,37 @@ export default function AnalyticsHubPage() {
           </CardContent>
         </Card>
       </div>
+
+      <div>
+        <h2 className="text-2xl font-headline mb-6 text-foreground">Top Prediction Techniques for Environmental Forecasting</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {predictionTechniques.map((tech) => (
+            <Card key={tech.name} className="shadow-lg flex flex-col">
+              <CardHeader>
+                <CardTitle className="flex items-start gap-3">
+                  <tech.icon className="h-7 w-7 text-primary mt-1 flex-shrink-0" />
+                  <span className="flex-1">{tech.name}</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="flex-grow space-y-3 text-sm">
+                <div>
+                  <h4 className="font-semibold text-foreground/90">Best for:</h4>
+                  <p className="text-muted-foreground">{tech.bestFor}</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-foreground/90">Why:</h4>
+                  <p className="text-muted-foreground">{tech.why}</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-foreground/90">EcoSentinel Use:</h4>
+                  <p className="text-muted-foreground">{tech.ecoSentinelUse}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
+
