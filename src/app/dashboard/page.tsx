@@ -55,10 +55,9 @@ export default function ThreatMapPage() {
             <Image
               src="https://placehold.co/1200x675.png"
               alt="World Map Placeholder"
-              layout="fill"
-              objectFit="cover"
+              fill
               data-ai-hint="openstreetmap style map"
-              className="opacity-50"
+              className="opacity-50 object-cover"
             />
             {/* Mock clickable threat markers */}
             {threatLayers.map((threat, index) => activeLayers[threat.id] && (
@@ -131,5 +130,3 @@ export default function ThreatMapPage() {
     </div>
   );
 }
-
-    
