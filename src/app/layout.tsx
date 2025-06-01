@@ -1,10 +1,11 @@
+
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: 'EcoInfo',
-  description: 'AI Environmental Guardian System',
+  description: 'AI Environmental Guardian System for EcoInfo',
 };
 
 export default function RootLayout({
