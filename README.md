@@ -1,6 +1,6 @@
 # EcoInfo - AI Environmental Guardian System
 
-[![EcoInfo Banner](https://placehold.co/1200x300.png?text=EcoInfo+Environmental+Dashboard)](#)
+[![EcoInfo Banner](Dashboard.jpeg)](#)
 *<p align="center" style="font-size: 0.9em; color: #666;">Replace this placeholder with an actual screenshot or banner for your project. (data-ai-hint: environmental technology dashboard app_screenshot)</p>*
 
 EcoInfo is a comprehensive platform designed to monitor, analyze, and predict environmental threats using advanced AI and data visualization techniques. It provides real-time insights into deforestation, wildfire risks, water pollution, and biodiversity threats, empowering users to make informed decisions for environmental protection.
