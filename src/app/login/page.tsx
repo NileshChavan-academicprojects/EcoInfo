@@ -15,7 +15,7 @@ export default function LoginPage() {
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center items-center gap-2 mb-4">
             <Leaf className="h-8 w-8 text-primary" />
-            <CardTitle className="text-3xl font-headline">EcoSentinel</CardTitle>
+            <CardTitle className="text-3xl font-headline">EcoInfo</CardTitle>
           </div>
           <CardDescription>Enter your credentials to access the dashboard</CardDescription>
         </CardHeader>
