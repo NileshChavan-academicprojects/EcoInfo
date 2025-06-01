@@ -1,7 +1,8 @@
+
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, LineChart, PieChartIcon, TreesIcon, FlameIcon, DropletsIcon, BirdIcon } from "lucide-react";
+import { BarChart, LineChart, Trees, Flame, Droplets, Bird } from "lucide-react";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
 import { Bar, BarChart as RechartsBarChart, Line, LineChart as RechartsLineChart, XAxis, YAxis, CartesianGrid, Pie, PieChart as RechartsPieChart, Cell, ResponsiveContainer } from "recharts"
 import Image from "next/image";
@@ -61,7 +62,7 @@ export default function AnalyticsHubPage() {
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <TreesIcon className="h-6 w-6 text-primary" />
+              <Trees className="h-6 w-6 text-primary" />
               Deforestation Trends
             </CardTitle>
             <CardDescription>Monthly forest area loss (sq km).</CardDescription>
@@ -82,7 +83,7 @@ export default function AnalyticsHubPage() {
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <FlameIcon className="h-6 w-6 text-primary" />
+              <Flame className="h-6 w-6 text-primary" />
               Wildfire Incident Rate
             </CardTitle>
             <CardDescription>Annual wildfire incidents.</CardDescription>
@@ -103,7 +104,7 @@ export default function AnalyticsHubPage() {
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <DropletsIcon className="h-6 w-6 text-primary" />
+              <Droplets className="h-6 w-6 text-primary" />
               Water Pollution Index
             </CardTitle>
             <CardDescription>Daily pollution index readings.</CardDescription>
@@ -124,7 +125,7 @@ export default function AnalyticsHubPage() {
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <BirdIcon className="h-6 w-6 text-primary" />
+              <Bird className="h-6 w-6 text-primary" />
               Biodiversity Status
             </CardTitle>
             <CardDescription>Species distribution by category.</CardDescription>

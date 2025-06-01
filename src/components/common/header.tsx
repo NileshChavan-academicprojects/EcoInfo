@@ -1,7 +1,8 @@
+
 "use client";
 
 import Link from "next/link";
-import { LeafIcon, Globe, UserCircle, PanelLeft } from "lucide-react";
+import { Leaf, Globe, UserCircle, PanelLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -36,7 +37,7 @@ export function Header() {
         <PanelLeft className="h-6 w-6" />
       </Button>
       <Link href="/dashboard" className="flex items-center gap-2 text-lg font-semibold md:text-base mr-auto">
-        <LeafIcon className="h-7 w-7 text-primary" />
+        <Leaf className="h-7 w-7 text-primary" />
         <span className="font-headline text-xl text-primary">EcoSentinel</span>
       </Link>
       

@@ -1,10 +1,11 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { LeafIcon } from "lucide-react";
+import { Leaf } from "lucide-react";
 import Link from "next/link";
 
 export default function LoginPage() {
@@ -13,7 +14,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center items-center gap-2 mb-4">
-            <LeafIcon className="h-8 w-8 text-primary" />
+            <Leaf className="h-8 w-8 text-primary" />
             <CardTitle className="text-3xl font-headline">EcoSentinel</CardTitle>
           </div>
           <CardDescription>Enter your credentials to access the dashboard</CardDescription>

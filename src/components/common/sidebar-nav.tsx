@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -5,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import type { LucideIcon } from "lucide-react";
-import { LayoutDashboard, BarChart3, MapIcon, TreesIcon, FlameIcon, DropletsIcon, BirdIcon } from "lucide-react";
+import { BarChart3, MapIcon } from "lucide-react";
 
 interface NavItem {
   href: string;

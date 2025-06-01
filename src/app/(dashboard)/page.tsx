@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -6,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { TreesIcon, FlameIcon, DropletsIcon, BirdIcon, MapPin } from "lucide-react";
+import { Trees, Flame, Droplets, Bird, MapPin } from "lucide-react";
 import { ThreatSummaryDialog } from "@/components/threats/threat-summary-dialog";
 
 interface ThreatLayer {
@@ -17,10 +18,10 @@ interface ThreatLayer {
 }
 
 const threatLayers: ThreatLayer[] = [
-  { id: "deforestation", name: "Deforestation", icon: TreesIcon, mockData: { location: "Amazon Rainforest", severity: "High", details: "Significant canopy loss detected in the last 7 days." } },
-  { id: "wildfire", name: "Wildfire Risk", icon: FlameIcon, mockData: { location: "California, USA", severity: "Very High", details: "Extreme dry conditions and high winds indicate imminent wildfire danger." } },
-  { id: "water_pollution", name: "Water Pollution", icon: DropletsIcon, mockData: { location: "Ganges River, India", severity: "Critical", details: "Elevated levels of industrial pollutants detected." } },
-  { id: "biodiversity", name: "Biodiversity Threats", icon: BirdIcon, mockData: { location: "Coral Triangle", severity: "Medium", details: "Decline in coral health and fish populations observed." } },
+  { id: "deforestation", name: "Deforestation", icon: Trees, mockData: { location: "Amazon Rainforest", severity: "High", details: "Significant canopy loss detected in the last 7 days." } },
+  { id: "wildfire", name: "Wildfire Risk", icon: Flame, mockData: { location: "California, USA", severity: "Very High", details: "Extreme dry conditions and high winds indicate imminent wildfire danger." } },
+  { id: "water_pollution", name: "Water Pollution", icon: Droplets, mockData: { location: "Ganges River, India", severity: "Critical", details: "Elevated levels of industrial pollutants detected." } },
+  { id: "biodiversity", name: "Biodiversity Threats", icon: Bird, mockData: { location: "Coral Triangle", severity: "Medium", details: "Decline in coral health and fish populations observed." } },
 ];
 
 export default function ThreatMapPage() {
