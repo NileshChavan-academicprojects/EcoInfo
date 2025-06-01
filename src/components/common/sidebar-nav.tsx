@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import type { LucideIcon } from "lucide-react";
-import { BarChart3, MapIcon } from "lucide-react";
+import { BarChart3, Map, LayoutGrid, BrainCircuit } from "lucide-react";
 
 interface NavItem {
   href: string;
@@ -16,8 +16,10 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { href: "/dashboard", label: "Threat Map", icon: MapIcon, segment: null },
+  { href: "/dashboard", label: "Threat Map", icon: Map, segment: null },
   { href: "/dashboard/analytics", label: "Analytics Hub", icon: BarChart3, segment: "analytics" },
+  { href: "/dashboard/analytic-tools", label: "Analytic Tools", icon: LayoutGrid, segment: "analytic-tools" },
+  { href: "/dashboard/ml-tools", label: "ML Tools", icon: BrainCircuit, segment: "ml-tools" },
 ];
 
 export function SidebarNav() {
@@ -45,3 +47,4 @@ export function SidebarNav() {
     </SidebarMenu>
   );
 }
+
