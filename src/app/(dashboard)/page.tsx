@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -52,13 +52,14 @@ export default function ThreatMapPage() {
             <CardDescription>Real-time visualization of environmental threats. Click on markers for details.</CardDescription>
           </CardHeader>
           <CardContent className="relative aspect-[16/9] bg-muted rounded-md overflow-hidden border">
-            <Image
-              src="https://placehold.co/1200x675.png"
-              alt="World Map Placeholder"
-              fill
-              data-ai-hint="openstreetmap style map"
-              className="opacity-50 object-cover"
-            />
+            <iframe
+              title="Global Environmental Threats Map"
+              src="https://maps.google.com/maps?q=world&t=&z=1&ie=UTF8&iwloc=&output=embed"
+              className="absolute inset-0 w-full h-full border-0"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
             {threatLayers.map((threat, index) => activeLayers[threat.id] && (
               <Button 
                 key={threat.id}
@@ -77,7 +78,7 @@ export default function ThreatMapPage() {
               </Button>
             ))}
              <div className="absolute bottom-4 right-4 p-2 bg-background/80 rounded-md text-xs text-muted-foreground shadow">
-                Map data CC BY OpenStreetMap contributors
+                Map data &copy; Google
              </div>
           </CardContent>
         </Card>
