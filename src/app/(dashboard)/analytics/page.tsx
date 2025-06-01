@@ -2,7 +2,7 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, LineChart, Trees, Flame, Droplets, Bird } from "lucide-react";
+import { BarChart, LineChart, Trees, Flame, Droplets, Bird, Waves } from "lucide-react";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
 import { Bar, BarChart as RechartsBarChart, Line, LineChart as RechartsLineChart, XAxis, YAxis, CartesianGrid, Pie, PieChart as RechartsPieChart, Cell, ResponsiveContainer } from "recharts"
 import Image from "next/image";
@@ -42,11 +42,22 @@ const biodiversityStatusData = [
     { name: "Fish", value: 278, fill: "hsl(var(--chart-5))" },
 ];
 
+const contaminantFlowData = [
+  { time: "0h", upstream: 5, midstream: 1, downstream: 0 },
+  { time: "6h", upstream: 15, midstream: 5, downstream: 2 },
+  { time: "12h", upstream: 30, midstream: 12, downstream: 6 },
+  { time: "18h", upstream: 20, midstream: 25, downstream: 15 },
+  { time: "24h", upstream: 10, midstream: 18, downstream: 22 },
+];
+
 const chartConfig = {
   loss: { label: "Area (sq km)", color: "hsl(var(--chart-1))" },
   incidents: { label: "Incidents", color: "hsl(var(--chart-2))" },
   level: { label: "Pollution Index", color: "hsl(var(--chart-3))" },
-  value: { label: "Species Count" }
+  value: { label: "Species Count" },
+  upstream: { label: "Upstream Conc.", color: "hsl(var(--chart-4))" },
+  midstream: { label: "Midstream Conc.", color: "hsl(var(--chart-5))" },
+  downstream: { label: "Downstream Conc.", color: "hsl(var(--chart-1))" }, // Reusing chart-1 color
 } satisfies Record<string, any>;
 
 
@@ -95,7 +106,7 @@ export default function AnalyticsHubPage() {
                 <XAxis dataKey="year" />
                 <YAxis />
                 <ChartTooltip content={<ChartTooltipContent />} />
-                <Line type="monotone" dataKey="incidents" strokeWidth={2} dot={true} />
+                <Line type="monotone" dataKey="incidents" strokeWidth={2} dot={true} stroke="var(--color-incidents)" />
               </RechartsLineChart>
             </ChartContainer>
           </CardContent>
@@ -116,7 +127,7 @@ export default function AnalyticsHubPage() {
                     <XAxis dataKey="date"/>
                     <YAxis domain={[40,80]}/>
                     <ChartTooltip content={<ChartTooltipContent hideIndicator />}/>
-                    <Line type="natural" dataKey="level" strokeWidth={2} dot={{r:4}} activeDot={{r:6}}/>
+                    <Line type="natural" dataKey="level" strokeWidth={2} dot={{r:4}} activeDot={{r:6}} stroke="var(--color-level)" />
                 </RechartsLineChart>
             </ChartContainer>
           </CardContent>
@@ -144,6 +155,31 @@ export default function AnalyticsHubPage() {
             </ChartContainer>
           </CardContent>
         </Card>
+
+        <Card className="shadow-lg md:col-span-2"> {/* Span 2 columns on medium screens and up */}
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Waves className="h-6 w-6 text-primary" />
+              Contaminant Flow Prediction
+            </CardTitle>
+            <CardDescription>Simulated contaminant concentration in a watershed over time (µg/L).</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={chartConfig} className="h-[350px] w-full">
+              <RechartsLineChart data={contaminantFlowData} accessibilityLayer margin={{ top:5, right: 20, left: -10, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="time" />
+                <YAxis label={{ value: 'Concentration (µg/L)', angle: -90, position: 'insideLeft', offset:0 }} />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Line type="monotone" dataKey="upstream" strokeWidth={2} dot={true} stroke="var(--color-upstream)" name="Upstream" />
+                <Line type="monotone" dataKey="midstream" strokeWidth={2} dot={true} stroke="var(--color-midstream)" name="Midstream" />
+                <Line type="monotone" dataKey="downstream" strokeWidth={2} dot={true} stroke="var(--color-downstream)" name="Downstream" />
+              </RechartsLineChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+
       </div>
     </div>
   );
