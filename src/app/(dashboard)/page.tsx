@@ -37,7 +37,7 @@ export default function ThreatMapPage() {
 
   const [weatherLocation, setWeatherLocation] = useState<string>("London");
   const [weatherForecast, setWeatherForecast] = useState<GetWeatherForecastOutput | null>(null);
-  const [isWeatherLoading, setIsWeatherLoading] = useState<boolean>(false);
+  const [isWeatherLoading, setIsWeatherLoading] = useState<boolean>(false); // Initially false, true when fetch starts
   const [weatherError, setWeatherError] = useState<string | null>(null);
 
   const handleLayerToggle = (layerId: string) => {
@@ -49,8 +49,9 @@ export default function ThreatMapPage() {
     setIsDialogOpen(true);
   };
 
-  const fetchWeather = async () => {
-    if (!weatherLocation.trim()) {
+  const fetchWeather = async (locationToFetch?: string) => {
+    const targetLocation = locationToFetch || weatherLocation;
+    if (!targetLocation.trim()) {
       setWeatherError("Please enter a location.");
       return;
     }
@@ -58,12 +59,12 @@ export default function ThreatMapPage() {
     setWeatherError(null);
     setWeatherForecast(null);
     try {
-      const input: GetWeatherForecastInput = { location: weatherLocation };
+      const input: GetWeatherForecastInput = { location: targetLocation };
       const result = await getWeatherForecast(input);
       setWeatherForecast(result);
     } catch (err) {
       console.error("Error fetching weather:", err);
-      setWeatherError("Failed to fetch weather forecast. The AI model might be busy or the location is not recognized. Please try again.");
+      setWeatherError("Failed to fetch weather. The AI service might be unavailable or the location not recognized. Check logs and try again.");
     } finally {
       setIsWeatherLoading(false);
     }
@@ -71,7 +72,7 @@ export default function ThreatMapPage() {
   
   useEffect(() => {
     // Fetch weather for default location on initial load
-    fetchWeather();
+    fetchWeather(weatherLocation); // Pass initial location explicitly
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty dependency array to run only once on mount
 
@@ -158,30 +159,38 @@ export default function ThreatMapPage() {
                   onKeyPress={(e) => e.key === 'Enter' && fetchWeather()}
                   className="flex-grow"
                 />
-                <Button onClick={fetchWeather} disabled={isWeatherLoading}>
+                <Button onClick={() => fetchWeather()} disabled={isWeatherLoading}>
                   {isWeatherLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Get"}
                 </Button>
               </div>
-              {weatherError && (
-                 <Alert variant="destructive" className="text-xs">
-                  <AlertTriangle className="h-4 w-4" />
-                  <AlertTitle>Error</AlertTitle>
-                  <AlertDescription>{weatherError}</AlertDescription>
-                </Alert>
-              )}
-              {weatherForecast && !isWeatherLoading && !weatherError && (
-                <div className="p-3 bg-muted/50 rounded-md space-y-2 text-sm">
-                  <p className="font-semibold text-primary">{weatherForecast.rawTemperature ? `${weatherForecast.rawTemperature.toFixed(0)}°${weatherForecast.unit || 'C'}` : 'N/A'}, {weatherForecast.rawDescription || 'Not available'}</p>
-                  <p>{weatherForecast.forecast}</p>
-                  {weatherForecast.rawHumidity && <p className="text-xs text-muted-foreground">Humidity: {weatherForecast.rawHumidity}%</p>}
-                  {weatherForecast.rawWindSpeed && <p className="text-xs text-muted-foreground">Wind: {weatherForecast.rawWindSpeed} km/h</p>}
-                </div>
-              )}
-              {isWeatherLoading && !weatherError &&(
+              
+              {isWeatherLoading && !weatherError ? (
                 <div className="flex items-center justify-center p-4">
                   <Loader2 className="h-6 w-6 animate-spin text-primary" />
                   <p className="ml-2 text-sm text-muted-foreground">Fetching weather...</p>
                 </div>
+              ) : weatherError ? (
+                <Alert variant="destructive" className="text-xs">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>{weatherError}</AlertDescription>
+                </Alert>
+              ) : weatherForecast ? (
+                <div className="p-3 bg-muted/50 rounded-md space-y-2 text-sm">
+                  <p className="font-semibold text-primary">
+                    {weatherForecast.rawTemperature !== undefined ? `${weatherForecast.rawTemperature.toFixed(0)}°${weatherForecast.unit || 'C'}` : 'N/A'}
+                    , {weatherForecast.rawDescription || 'Not available'}
+                  </p>
+                  <p>{weatherForecast.forecast || "Summary not available."}</p>
+                  {(weatherForecast.rawHumidity !== undefined && weatherForecast.rawHumidity !== null) && 
+                    <p className="text-xs text-muted-foreground">Humidity: {weatherForecast.rawHumidity}%</p>
+                  }
+                  {(weatherForecast.rawWindSpeed !== undefined && weatherForecast.rawWindSpeed !== null) && 
+                    <p className="text-xs text-muted-foreground">Wind: {weatherForecast.rawWindSpeed} km/h</p>
+                  }
+                </div>
+              ) : (
+                 <p className="p-3 text-sm text-muted-foreground">Enter a location to get the weather forecast.</p>
               )}
             </CardContent>
           </Card>
