@@ -1,4 +1,4 @@
-# **App Name**: EcoSentinel
+# **App Name**: EcoInfo
 
 ## Core Features:
 
