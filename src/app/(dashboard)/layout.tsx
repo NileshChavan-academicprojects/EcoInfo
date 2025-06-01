@@ -1,5 +1,7 @@
+
 import { Header } from "@/components/common/header";
 import { SidebarNav } from "@/components/common/sidebar-nav";
+import { Footer } from "@/components/common/footer";
 import { 
   SidebarProvider, 
   Sidebar, 
@@ -41,6 +43,7 @@ export default function DashboardLayout({
             <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-background">
               {children}
             </main>
+            <Footer />
           </SidebarInset>
         </div>
       </div>
